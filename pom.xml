@@ -11,7 +11,7 @@
     <modules>
         <module>pai-pai-user</module>
         <module>pai-pai-base</module>
-        <module>pai-pai-common</module>
+        <module>pai-pai-commons</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
