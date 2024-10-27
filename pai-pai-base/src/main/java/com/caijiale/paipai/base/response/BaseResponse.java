@@ -1,6 +1,6 @@
-package com.caijiale.paipai.response;
+package com.caijiale.paipai.base.response;
 
-import com.caijiale.paipai.enums.ResultCodeEnum;
+import com.caijiale.paipai.base.enums.ResultCodeEnum;
 import lombok.Data;
 
 /**

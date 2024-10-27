@@ -1,4 +1,4 @@
-package com.caijiale.paipai.enums;
+package com.caijiale.paipai.base.enums;
 
 import lombok.Getter;
 
