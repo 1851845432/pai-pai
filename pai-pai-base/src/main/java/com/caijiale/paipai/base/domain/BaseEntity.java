@@ -1,14 +1,19 @@
 package com.caijiale.paipai.base.domain;
 
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.caijiale.paipai.base.page.PageRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
+/**
+ * @author MAKABAKA
+ */
 @Data
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,17 +21,21 @@ public class BaseEntity implements Serializable {
     /**
      * 创建时间
      */
-    @ApiModelProperty(name = "创建时间", notes = "")
+    @ApiModelProperty(value = "创建时间", notes = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdTime;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdTime;
     /**
      * 更新时间
      */
-    @ApiModelProperty(name = "更新时间", notes = "")
+    @ApiModelProperty(value = "更新时间", notes = "")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatedTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedTime;
     /**
      * 分页查询条件
      */
+    @ApiModelProperty(value = "分页查询条件", notes = "")
+    @TableField(exist = false)
     private PageRequest pageRequest;
 }
