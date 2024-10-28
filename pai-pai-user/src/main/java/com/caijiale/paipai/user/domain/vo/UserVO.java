@@ -1,6 +1,5 @@
 package com.caijiale.paipai.user.domain.vo;
 
-import com.caijiale.paipai.base.domain.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ import java.io.Serializable;
  * @date : 2024-10-25
  */
 @Data
-public class UserVO extends BaseEntity implements Serializable {
+public class UserVO implements Serializable {
     /**
      * 用户ID
      */
@@ -28,7 +27,7 @@ public class UserVO extends BaseEntity implements Serializable {
     /**
      * 是否删除
      */
-    private String deleted;
+    private Integer deleted;
     /**
      * 用户角色
      */

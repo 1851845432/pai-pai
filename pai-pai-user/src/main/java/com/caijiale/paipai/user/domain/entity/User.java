@@ -1,10 +1,13 @@
 package com.caijiale.paipai.user.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.caijiale.paipai.base.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,7 +18,9 @@ import java.io.Serializable;
  * @author : caijiale
  * @date : 2024-10-25
  */
+
 @Data
+@Builder
 @ApiModel(value = "用户表")
 @TableName("user")
 public class User extends BaseEntity implements Serializable {
@@ -23,7 +28,7 @@ public class User extends BaseEntity implements Serializable {
      * 用户ID
      */
     @ApiModelProperty(value = "用户ID", notes = "")
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 用户名
@@ -38,12 +43,13 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 是否删除
      */
-    @ApiModelProperty(value = "是否删除", notes = "")
+    @ApiModelProperty(value = "是否删除", notes = "0 未删除 1 已删除")
+    @TableLogic
     private Integer deleted;
     /**
      * 用户角色
      */
-    @ApiModelProperty(value = "用户角色", notes = "")
+    @ApiModelProperty(value = "用户角色", notes = "admin 管理员 common 普通用户")
     private String userRole;
     /**
      * 用户登录方式;0 账号密码登录 1微信登录

@@ -1,5 +1,6 @@
 package com.caijiale.paipai.user.Interceptor;
 
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -11,10 +12,9 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 记录请求日志 记录请求URL，请求方法，请求参数
+        // 记录请求日志 记录请求URL，请求参数
         log.info("Request URL: {}", request.getRequestURL());
-        log.info("Request Method: {}", request.getMethod());
-        log.info("Request Params: {}", request.getParameterMap());
+        log.info("Request Params: {}", JSONUtil.toJsonStr(request.getParameterMap()));
         return true;
     }
 }

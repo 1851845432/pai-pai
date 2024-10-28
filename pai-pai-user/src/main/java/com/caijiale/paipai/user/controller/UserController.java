@@ -3,6 +3,7 @@ package com.caijiale.paipai.user.controller;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.base.response.BaseResponse;
 import com.caijiale.paipai.user.domain.entity.User;
+import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.domain.vo.UserVO;
 import com.caijiale.paipai.user.service.UserService;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,8 +32,8 @@ public class UserController {
      */
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public BaseResponse<Boolean> register(@RequestBody UserReq userReq) {
-        return BaseResponse.success(userService.register(userReq));
+    public BaseResponse<Boolean> register(@RequestBody @Validated UserRegisterReq userRegisterReq) {
+        return BaseResponse.success(userService.register(userRegisterReq));
     }
 
     /**
@@ -41,7 +43,7 @@ public class UserController {
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
+    @GetMapping
     public ResponseEntity<User> queryById(Long id) {
         return ResponseEntity.ok(userService.queryById(id));
     }

@@ -2,20 +2,28 @@ package com.caijiale.paipai.user.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.caijiale.paipai.base.page.PageRequest;
 import com.caijiale.paipai.base.page.PageResult;
+import com.caijiale.paipai.commons.enums.BizErrorCodeEnum;
+import com.caijiale.paipai.commons.exception.BizException;
 import com.caijiale.paipai.user.converter.UserConverter;
 import com.caijiale.paipai.user.domain.entity.User;
+import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.domain.vo.UserVO;
+import com.caijiale.paipai.user.enums.UserLoginTypeEnum;
 import com.caijiale.paipai.user.mapper.UserMapper;
 import com.caijiale.paipai.user.service.UserService;
+import com.caijiale.paipai.user.utils.UserPwdEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.caijiale.paipai.user.constant.UserConstant.COMMON_USER;
 
 /**
  * 用户表;(user)表服务实现类
@@ -36,7 +44,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public User queryById(Long id) {
-        return this.queryById(id);
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new BizException(BizErrorCodeEnum.USER_NOT_EXIST);
+        }
+        return user;
     }
 
     /**
@@ -152,8 +164,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return total > 0;
     }
 
+    /**
+     * 用户注册
+     *
+     * @param userRegisterReq
+     * @return
+     */
     @Override
-    public Object register(UserReq userReq) {
-        return null;
+    public Boolean register(UserRegisterReq userRegisterReq) {
+        //1. 校验用户是否已经存在
+        LambdaQueryWrapper<User> queryWrapper = new QueryWrapper<User>().lambda()
+                .eq(User::getUsername, userRegisterReq.getUsername());
+        long exits = this.count(queryWrapper);
+        if (exits > 0) {
+            throw new BizException(BizErrorCodeEnum.USER_IS_EXIST);
+        }
+        //2. 注册用户，设置默认参数
+        String salt = UserPwdEncoderUtil.generateSalt();
+        User user = User.builder()
+                .username(userRegisterReq.getUsername())
+                .password(UserPwdEncoderUtil.encode(userRegisterReq.getPassword(), salt))
+                .userRole(COMMON_USER)
+                .loginType(UserLoginTypeEnum.PASSWORD.getCode())
+                .salt(salt)
+                .build();
+        //3. 保存用户
+        boolean f = this.save(user);
+        if (!f) {
+            throw new BizException(BizErrorCodeEnum.SYSTEM_ERROR, "注册失败，数据库插入异常");
+        }
+        return user.getId() > 0;
     }
 }
