@@ -1,10 +1,10 @@
 package com.caijiale.paipai.user.service;
 
 
+import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.user.domain.entity.User;
-import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.domain.vo.UserVO;
 
@@ -56,5 +56,7 @@ public interface UserService extends IService<User> {
      */
     boolean deleteById(Long id);
 
-    Boolean register(UserRegisterReq userRegisterReq);
+    Boolean register(UserReq userReq);
+
+    SaResult doLogin(UserReq userReq);
 }

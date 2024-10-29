@@ -1,5 +1,8 @@
 package com.caijiale.paipai.user.service.impl;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,13 +10,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.caijiale.paipai.base.page.PageRequest;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.commons.enums.BizErrorCodeEnum;
 import com.caijiale.paipai.commons.exception.BizException;
 import com.caijiale.paipai.user.converter.UserConverter;
 import com.caijiale.paipai.user.domain.entity.User;
-import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.domain.vo.UserVO;
 import com.caijiale.paipai.user.enums.UserLoginTypeEnum;
@@ -60,13 +61,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public PageResult paginQuery(UserReq userReq) {
-        if (userReq == null || userReq.getPageRequest() == null) {
-            throw new IllegalArgumentException("请求参数不能为空");
-        }
 
-        PageRequest pageRequest = userReq.getPageRequest();
-        int pageNo = pageRequest.getPageNo();
-        int pageSize = pageRequest.getPageSize();
+        int pageNo = userReq.getPageNo();
+        int pageSize = userReq.getPageSize();
 
 
         //1. 构建动态查询条件
@@ -168,14 +165,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 用户注册
      *
-     * @param userRegisterReq
+     * @param userReq
      * @return
      */
     @Override
-    public Boolean register(UserRegisterReq userRegisterReq) {
+    public Boolean register(UserReq userReq) {
         //1. 校验用户是否已经存在
         LambdaQueryWrapper<User> queryWrapper = new QueryWrapper<User>().lambda()
-                .eq(User::getUsername, userRegisterReq.getUsername());
+                .eq(User::getUsername, userReq.getUsername());
         long exits = this.count(queryWrapper);
         if (exits > 0) {
             throw new BizException(BizErrorCodeEnum.USER_IS_EXIST);
@@ -183,17 +180,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //2. 注册用户，设置默认参数
         String salt = UserPwdEncoderUtil.generateSalt();
         User user = User.builder()
-                .username(userRegisterReq.getUsername())
-                .password(UserPwdEncoderUtil.encode(userRegisterReq.getPassword(), salt))
+                .username(userReq.getUsername())
+                .password(UserPwdEncoderUtil.encode(userReq.getPassword(), salt))
                 .userRole(COMMON_USER)
                 .loginType(UserLoginTypeEnum.PASSWORD.getCode())
                 .salt(salt)
                 .build();
         //3. 保存用户
-        boolean f = this.save(user);
-        if (!f) {
+        boolean success = this.save(user);
+        if (!success) {
             throw new BizException(BizErrorCodeEnum.SYSTEM_ERROR, "注册失败，数据库插入异常");
         }
-        return user.getId() > 0;
+        return true;
+    }
+
+    @Override
+    public SaResult doLogin(UserReq userReq) {
+        User user = userMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getUsername, userReq.getUsername()));
+        if (user == null) {
+            throw new BizException(BizErrorCodeEnum.USER_NOT_EXIST);
+        }
+        boolean matches = UserPwdEncoderUtil.matches(userReq.getPassword(), user.getSalt(), user.getPassword());
+        if (!matches) {
+            throw new BizException(BizErrorCodeEnum.USER_PASSWORD_ERROR);
+        }
+        StpUtil.login(user.getId());
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        return SaResult.data(tokenInfo);
     }
 }

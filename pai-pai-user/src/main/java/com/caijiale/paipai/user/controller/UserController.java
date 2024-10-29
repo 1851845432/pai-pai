@@ -1,9 +1,10 @@
 package com.caijiale.paipai.user.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.base.response.BaseResponse;
 import com.caijiale.paipai.user.domain.entity.User;
-import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.domain.vo.UserVO;
 import com.caijiale.paipai.user.service.UserService;
@@ -15,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 用户表
+ * 用户登录
  *
  * @author : caijiale
  * @date : 2024-10-26
@@ -32,8 +33,27 @@ public class UserController {
      */
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public BaseResponse<Boolean> register(@RequestBody @Validated UserRegisterReq userRegisterReq) {
-        return BaseResponse.success(userService.register(userRegisterReq));
+    public BaseResponse<Boolean> register(@RequestBody @Validated UserReq userReq) {
+        return BaseResponse.success(userService.register(userReq));
+    }
+
+    /**
+     * 用户登录
+     */
+    @ApiOperation("用户登录")
+    @PostMapping("/doLogin")
+    public BaseResponse<SaResult> doLogin(@RequestBody @Validated UserReq userReq) {
+        return BaseResponse.success(userService.doLogin(userReq));
+    }
+
+    /**
+     * 用户是否登录
+     *
+     * @return
+     */
+    @RequestMapping("isLogin")
+    public SaResult isLogin() {
+        return SaResult.ok("是否登录：" + StpUtil.isLogin());
     }
 
     /**

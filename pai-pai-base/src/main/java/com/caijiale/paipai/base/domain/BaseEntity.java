@@ -3,7 +3,6 @@ package com.caijiale.paipai.base.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.caijiale.paipai.base.page.PageRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -32,10 +31,4 @@ public class BaseEntity implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
-    /**
-     * 分页查询条件
-     */
-    @ApiModelProperty(value = "分页查询条件", notes = "")
-    @TableField(exist = false)
-    private PageRequest pageRequest;
 }

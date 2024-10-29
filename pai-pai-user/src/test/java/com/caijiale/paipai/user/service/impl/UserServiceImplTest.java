@@ -1,10 +1,8 @@
 package com.caijiale.paipai.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.caijiale.paipai.base.page.PageRequest;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.user.domain.entity.User;
-import com.caijiale.paipai.user.domain.request.UserRegisterReq;
 import com.caijiale.paipai.user.domain.request.UserReq;
 import com.caijiale.paipai.user.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -56,7 +54,7 @@ class UserServiceImplTest {
     void testPaginQuery() {
         // Setup
         final UserReq userReq = new UserReq();
-        userReq.setPageRequest(new PageRequest());
+
         userReq.setUsername("username");
         userReq.setDeleted("deleted");
         userReq.setUserRole("userRole");
@@ -157,7 +155,7 @@ class UserServiceImplTest {
     @Test
     void testRegister() {
         // Setup
-        final UserRegisterReq userRegisterReq = new UserRegisterReq();
+        final UserReq userRegisterReq = new UserReq();
         userRegisterReq.setUsername("username");
         userRegisterReq.setPassword("password");
 

@@ -23,6 +23,7 @@
         <knife4j.version>4.4.0</knife4j.version>
         <huTool.version>5.8.25</huTool.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <satoken.version>1.39.0</satoken.version>
     </properties>
     <dependencies>
 
@@ -93,6 +94,13 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+            <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -127,5 +135,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
