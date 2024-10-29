@@ -2,7 +2,6 @@ package com.caijiale.paipai.user.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.caijiale.paipai.base.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -40,12 +39,6 @@ public class User extends BaseEntity implements Serializable {
      */
     @ApiModelProperty(value = "用户密码", notes = "")
     private String password;
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty(value = "是否删除", notes = "0 未删除 1 已删除")
-    @TableLogic
-    private Integer deleted;
     /**
      * 用户角色
      */
