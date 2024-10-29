@@ -31,6 +31,7 @@ import static com.caijiale.paipai.user.constant.UserConstant.COMMON_USER;
  * @author : caijiale
  * @date : 2024-10-26
  */
+
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
