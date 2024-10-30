@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.caijiale.paipai.base.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -17,9 +18,10 @@ import java.io.Serializable;
  * @date : 2024-10-29 19:03:25
  */
 @Data
-@Builder
+@NoArgsConstructor
 @ApiModel(value = "用户个人信息表")
-@TableName("UserInfo")
+@TableName("user_info")
+@Accessors(chain = true)
 public class UserInfo extends BaseEntity implements Serializable {
 
     /**

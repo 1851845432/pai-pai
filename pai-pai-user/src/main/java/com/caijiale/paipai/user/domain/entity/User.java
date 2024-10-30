@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.caijiale.paipai.base.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -19,9 +20,10 @@ import java.io.Serializable;
  */
 
 @Data
-@Builder
+@NoArgsConstructor
 @ApiModel(value = "用户表")
 @TableName("user")
+@Accessors(chain = true)
 public class User extends BaseEntity implements Serializable {
     /**
      * 用户ID

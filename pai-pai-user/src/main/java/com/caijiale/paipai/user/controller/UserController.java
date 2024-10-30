@@ -11,8 +11,6 @@ import com.caijiale.paipai.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,7 +31,7 @@ public class UserController {
      */
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public BaseResponse<Boolean> register(@RequestBody @Validated UserReq userReq) {
+    public BaseResponse<Boolean> register(@RequestBody UserReq userReq) {
         return BaseResponse.success(userService.register(userReq));
     }
 
@@ -42,7 +40,7 @@ public class UserController {
      */
     @ApiOperation("用户登录")
     @PostMapping("/doLogin")
-    public BaseResponse<SaResult> doLogin(@RequestBody @Validated UserReq userReq) {
+    public BaseResponse<SaResult> doLogin(@RequestBody UserReq userReq) {
         return BaseResponse.success(userService.doLogin(userReq));
     }
 
@@ -64,8 +62,8 @@ public class UserController {
      */
     @ApiOperation("通过ID查询单条数据")
     @GetMapping
-    public ResponseEntity<User> queryById(Long id) {
-        return ResponseEntity.ok(userService.queryById(id));
+    public BaseResponse<UserVO> queryById(Long id) {
+        return BaseResponse.success(userService.queryById(id));
     }
 
     /**
@@ -89,8 +87,8 @@ public class UserController {
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<User> add(User user) {
-        return ResponseEntity.ok(userService.insert(user));
+    public BaseResponse<UserVO> add(User user) {
+        return BaseResponse.success(userService.insert(user));
     }
 
     /**
@@ -101,8 +99,8 @@ public class UserController {
      */
     @ApiOperation("更新数据")
     @PutMapping
-    public ResponseEntity<User> edit(User user) {
-        return ResponseEntity.ok(userService.update(user));
+    public BaseResponse<UserVO> edit(User user) {
+        return BaseResponse.success(userService.update(user));
     }
 
     /**
@@ -113,7 +111,7 @@ public class UserController {
      */
     @ApiOperation("通过主键删除数据")
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(userService.deleteById(id));
+    public BaseResponse<Boolean> deleteById(Long id) {
+        return BaseResponse.success(userService.deleteById(id));
     }
 }

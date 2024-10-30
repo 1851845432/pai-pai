@@ -179,13 +179,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         //2. 注册用户，设置默认参数
         String salt = UserPwdEncoderUtil.generateSalt();
-        User user = User.builder()
-                .username(userReq.getUsername())
-                .password(UserPwdEncoderUtil.encode(userReq.getPassword(), salt))
-                .userRole(COMMON_USER)
-                .loginType(UserLoginTypeEnum.PASSWORD.getCode())
-                .salt(salt)
-                .build();
+        User user = new User()
+                .setUsername(userReq.getUsername())
+                .setPassword(UserPwdEncoderUtil.encode(userReq.getPassword(), salt))
+                .setUserRole(COMMON_USER)
+                .setLoginType(UserLoginTypeEnum.PASSWORD.getCode())
+                .setSalt(salt);
         //3. 保存用户
         boolean success = this.save(user);
         if (!success) {

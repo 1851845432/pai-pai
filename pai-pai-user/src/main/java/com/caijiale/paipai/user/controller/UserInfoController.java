@@ -1,16 +1,19 @@
 package com.caijiale.paipai.user.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.caijiale.paipai.base.page.PageResult;
 import com.caijiale.paipai.base.response.BaseResponse;
 import com.caijiale.paipai.user.domain.entity.UserInfo;
+import com.caijiale.paipai.user.domain.request.UserInfoReq;
+import com.caijiale.paipai.user.domain.vo.UserInfoVO;
 import com.caijiale.paipai.user.service.UserInfoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -21,6 +24,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("userInfo")
+@Api(tags = "用户个人信息表对象功能接口")
+@Validated
 public class UserInfoController {
     /**
      * 服务对象
@@ -33,8 +38,9 @@ public class UserInfoController {
      */
     @ApiOperation("分页查询")
     @PostMapping("/page")
-    public BaseResponse<PageResult<UserInfo>> paginQuery(@RequestBody UserInfo userInfo) {
-        return BaseResponse.success(this.userInfoService.page(new Page<>(), new QueryWrapper<>(userInfo)));
+    public BaseResponse<PageResult<UserInfoVO>> paginQuery(@RequestBody UserInfoReq userInfoReq) {
+        PageResult<UserInfoVO> pageResult = userInfoService.paginQuery(userInfoReq);
+        return BaseResponse.success(pageResult);
     }
 
     /**
@@ -45,7 +51,8 @@ public class UserInfoController {
      */
     @ApiOperation("通过ID查询单条数据")
     @GetMapping
-    public BaseResponse<UserInfo> queryById(Long id) {
+    public BaseResponse<UserInfo> queryById(@NotNull Long id) {
+
         return BaseResponse.success(this.userInfoService.getById(id));
     }
 

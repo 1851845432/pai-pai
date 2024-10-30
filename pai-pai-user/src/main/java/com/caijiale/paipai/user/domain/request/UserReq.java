@@ -2,6 +2,7 @@ package com.caijiale.paipai.user.domain.request;
 
 import com.caijiale.paipai.base.page.PageRequest;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,10 +15,12 @@ import java.io.Serializable;
  * @date : 2024-10-25
  */
 @Data
+@Validated
 public class UserReq extends PageRequest implements Serializable {
     /**
      * 用户ID
      */
+
     private Long id;
     /**
      * 用户名

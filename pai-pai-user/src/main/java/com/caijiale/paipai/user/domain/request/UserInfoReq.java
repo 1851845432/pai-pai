@@ -4,7 +4,6 @@ package com.caijiale.paipai.user.domain.request;
 import com.caijiale.paipai.base.page.PageRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,7 +15,6 @@ import java.io.Serializable;
  * @date : 2024-10-29 19:16:37
  */
 @Data
-@Builder
 @ApiModel(value = "用户个人信息表 请求类")
 public class UserInfoReq extends PageRequest implements Serializable {
 

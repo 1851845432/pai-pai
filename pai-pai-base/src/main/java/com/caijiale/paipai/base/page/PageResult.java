@@ -32,13 +32,4 @@ public class PageResult<T> implements Serializable {
         pageResult.setResult(page.getRecords());
         return pageResult;
     }
-
-    public void setTotal(Integer total) {
-        this.total = total;
-        if (pageSize > 0) {
-            totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
-        } else {
-            totalPage = 0;
-        }
-    }
 }

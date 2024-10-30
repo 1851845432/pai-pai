@@ -37,5 +37,5 @@ public class BaseEntity implements Serializable {
      */
     @TableLogic
     @ApiModelProperty(value = "是否删除", notes = "")
-    private java.lang.Integer deleted;
+    private Integer deleted;
 }
